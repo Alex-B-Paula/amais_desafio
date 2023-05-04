@@ -1,10 +1,11 @@
 <?php
-
 function database()
 {
-    $sql_server = "localhost";
-    $sql_user = "root";
-    $sql_pass = "Ay95uhAvlVzKhkTU";
+    $config = parse_ini_file('config.ini');
+
+    $sql_server = $config["db_server"];
+    $sql_user = $config["db_user"];
+    $sql_pass = $config["db_password"];
 
     $conn = new mysqli($sql_server, $sql_user, $sql_pass);
 

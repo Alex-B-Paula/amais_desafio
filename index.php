@@ -11,6 +11,8 @@
             crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"
             integrity="sha256-oP6HI9z1XaZNBrJURtCoUT5SUnxFr8s3BzRl+cbzUq8=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <script src="js/script.js"></script>
 </head>
 
 <body>
@@ -46,7 +48,12 @@
                 <p id="aviso_login" class="text-danger my-1">Usuário ou Senha incorretos.</p>
                 <p id="aviso_erro" class="text-danger my-1">Erro no acesso ao servidor.</p>
 
-                <button type="submit" class="btn btn-primary ms-auto my-3">Submit</button>
+                <button type="submit" class="btn btn-primary ms-auto my-3">Acessar</button>
+
+                <a class="icon-link" href="cadastro.php">
+                    Clique aqui para cadastrar seu currículo
+                    <i class="bi bi-arrow-right" aria-hidden="true"></i>
+                </a>
             </div>
 
 
@@ -55,20 +62,6 @@
 </div>
 
 <script type='text/javascript'>
-
-    function GetURLParameter(sParam)
-    {
-        var sPageURL = window.location.search.substring(1);
-        var sURLVariables = sPageURL.split('&');
-        for (var i = 0; i < sURLVariables.length; i++)
-        {
-            var sParameterName = sURLVariables[i].split('=');
-            if (sParameterName[0] == sParam)
-            {
-                return sParameterName[1];
-            }
-        }
-    }
 
     let erro = GetURLParameter('erro');
 
