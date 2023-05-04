@@ -32,7 +32,7 @@ $curriculo = unserialize($_SESSION["curriculo"]);
 
     <div class="container bg-secondary-subtle justify-content-center align-items-center border border-light rounded-1">
 
-        <form id="contact-form" method="post" action="enviar_cadastro.php" role="form">
+        <form id="contact-form" method="post" action="#" role="form">
 
             <div class="form-group mt-4 mb-2  d-flex flex-column mx-2">
                 <div class="flex-row d-flex">

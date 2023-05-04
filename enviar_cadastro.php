@@ -1,11 +1,27 @@
 <?php
-
 include "database.php";
 include "curriculo.php";
+session_start();
+
 $config = parse_ini_file('config.ini');
 
 date_default_timezone_set("America/Sao_Paulo");
 $errorMessage = "Erro no envio do Currículo";
+
+function salvar_progresso()
+{
+    $_SESSION["usuario"] = $_POST["usuario"];
+    $_SESSION["email"] = $_POST["email"];
+    $_SESSION["nome"] = $_POST["nome"];
+    $_SESSION["cpf"] = $_POST["cpf"];
+    $_SESSION["nascimento"] = $_POST["nascimento"];
+    $_SESSION["sexo"] = $_POST["sexo"];
+    $_SESSION["estado_civil"] = $_POST["estado_civil"];
+    $_SESSION["escolaridade"] = $_POST["escolaridade"];
+    $_SESSION["formacao"] = $_POST["formacao"];
+    $_SESSION["experiencia"] = $_POST["experiencia"];
+    $_SESSION["pretensao"] = $_POST["pretensao"];
+}
 
 try {
 
@@ -15,23 +31,6 @@ try {
 
     $usuario = $_POST["usuario"];
     $pass = $_POST["senha"];
-
-    if ($usuario == $config["admin_user"]){
-        if ($pass == $config["admin_password"]){
-
-            header("Location: /admin.php",TRUE,301);
-        }
-        else{
-
-            header("Location: /index.php?erro=login",TRUE,301);
-            die();
-        }
-    }
-
-    $conn = database();
-    $sql = "SELECT * FROM desafio.curriculo WHERE Usuario = '{$usuario}'";
-    $result = $conn->query($sql);
-
     $hash_pass = password_hash($pass, PASSWORD_DEFAULT);
     $email = $_POST["email"];
     $nome = $_POST["nome"];
@@ -45,6 +44,24 @@ try {
     $pretensao = $_POST["pretensao"];
     $data = date("Y-m-d H-i-s");
 
+
+    if ($usuario == $config["admin_user"]){
+        $conn->close();
+        salvar_progresso();
+        header("Location: /cadastro.php?erro=usuario",TRUE,301);
+        die();
+    }
+
+    $sql = "SELECT * FROM desafio.curriculo WHERE Usuario = '{$usuario}'";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows >= 1){
+        $conn->close();
+        salvar_progresso();
+        header("Location: /cadastro.php?erro=usuario",TRUE,301);
+        die();
+    }
+
     $sql = "INSERT INTO desafio.curriculo (Usuario, Email, Senha, Nome, CPF, DataNascimento, Sexo, 
                                EstadoCivil, Escolaridade, 
                                Formacao, Experiencia, Pretensao, DataEnvio) VALUES ('{$usuario}', '{$email}', 
@@ -53,7 +70,6 @@ try {
                                                                                     '{$civil}', '{$escolaridade}', 
                                                                                     '{$formacao}', '{$experiencia}', 
                                                                                     '{$pretensao}', '{$data}')";
-
 
     $result = $conn->query($sql);
 
