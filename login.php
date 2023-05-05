@@ -21,8 +21,8 @@ try {
         else{
             
             header("Location: /index.php?erro=login",TRUE,301);
-            die();
         }
+        die();
     }
 
     $conn = database();
