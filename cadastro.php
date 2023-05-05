@@ -26,7 +26,7 @@ session_start();
 
     <div class="container bg-secondary-subtle justify-content-center align-items-center border border-light rounded-1">
 
-        <form id="contact-form" method="post" action="enviar_cadastro.php" role="form">
+        <form id="formulario" method="post" action="enviar_cadastro.php" role="form">
 
 
             <div class="form-group mt-4 mb-2  d-flex flex-column mx-2">
@@ -43,25 +43,26 @@ session_start();
                     <div class="col">
                         <label for="form_usuario" class="mt-2">Usuário</label>
                         <input id="form_usuario" type="text" name="usuario" class="form-control"
-                               placeholder="Usuario" required="required"
-                               data-error="Usuario invalido" maxlength="10"
+                               placeholder="Usuario"
+                               data-error="Usuario invalido" maxlength="20"
                                value="<?= $_SESSION['usuario'] ?? ""; ?>">
-                        <div class="help-block with-errors"></div>
-                        <p id="aviso_usuario" class="text-danger my-1">Usuário já existe</p>
+                        <div class="help-block with-errors"><p id="aviso_usuario" class="text-danger my-1">Usuário já
+                                existe</p></div>
+
                     </div>
 
                     <div class="col">
-                        <label for="form_email" class="mt-2">Senha</label>
-                        <input id="form_email" type="password" name="senha" class="form-control"
-                               placeholder="Senha" required="required"
+                        <label for="form_senha" class="mt-2">Senha</label>
+                        <input id="form_senha" type="password" name="senha" class="form-control"
+                               placeholder="Senha"
                                data-error="Senha invalida" minlength="8">
-                        <div class="help-block with-errors"></div>
+                        <div class="help-block with-errors"><p>Senha tem que ter no mínimo 8 caracteres</p></div>
                     </div>
                 </div>
 
                 <label for="form_nome" class="mt-2">Nome</label>
                 <input id="form_nome" type="text" name="nome" class="form-control"
-                       placeholder="Nome" required="required"
+                       placeholder="Nome"
                        data-error="Nome invalido" value="<?= $_SESSION['nome'] ?? ""; ?>">
                 <div class="help-block with-errors"></div>
 
@@ -69,17 +70,20 @@ session_start();
                     <div class="col">
                         <label for="form_email" class="mt-2">Email</label>
                         <input id="form_email" type="email" name="email" class="form-control"
-                               placeholder="Usuario" required="required"
+                               placeholder="Email"
                                data-error="Email invalido" value="<?= $_SESSION['email'] ?? ""; ?>">
-                        <div class="help-block with-errors"></div>
-                        <p id="aviso_email" class="text-danger my-1">Email já existe</p>
+                        <div class="help-block with-errors"><p id="aviso_email" class="text-danger my-1">Email já
+                                registrado</p></div>
+
                     </div>
                     <div class="col">
                         <label for="form_cpf" class="mt-2">CPF</label>
                         <input id="form_cpf" type="number" name="cpf" class="form-control"
-                               placeholder="CPF" required="required"
+                               placeholder="CPF"
                                data-error="CPF invalido" maxlength="11" value="<?= $_SESSION['cpf'] ?? ""; ?>">
-                        <div class="help-block with-errors"></div>
+                        <div class="help-block with-errors">
+                            <p id="aviso_cpf" class="text-danger my-1">CPF inválido</p>
+                        </div>
                     </div>
                 </div>
 
@@ -97,7 +101,7 @@ session_start();
                         <Select id="form_sexo" name="sexo" class="form-control"
                                 required="required"
                                 data-error="Escolha invalida">
-                            <option selected>Selecione</option>
+                            <option value="" selected>Selecione Sexo</option>
                             <option value="Masculino">Masculino</option>
                             <option value="Feminino">Feminino</option>
                             <option value="Não informado">Prefiro Não Informar</option>
@@ -114,7 +118,7 @@ session_start();
                             <Select id="form_civil" name="estado_civil" class="form-control"
                                     required="required"
                                     data-error="Escolha invalida">
-                                <option selected>Selecione</option>
+                                <option value="" selected>Selecione Estado Civil</option>
                                 <option value="Solteiro">Solteiro</option>
                                 <option value="Casado">Casado</option>
                                 <option value="Separado">Separado</option>
@@ -129,7 +133,7 @@ session_start();
                         <Select id="form_escolaridade" name="escolaridade" class="form-control"
                                 required="required"
                                 data-error="Escolha invalida">
-                            <option selected>Selecione</option>
+                            <option value="" selected>Selecione Escolaridade</option>
                             <option value="Ensino Fundamental">Ensino Fundamental</option>
                             <option value="Ensino Médio">Ensino Médio</option>
                             <option value="Ensino Superior">Ensino Superior</option>
@@ -141,24 +145,27 @@ session_start();
                     </div>
                 </div>
 
-                <label for="form_formacao" class="mt-2">Formação - Especializações</label>
-                <textarea id="form_formacao" rows="10" name="formacao" class="form-control"
-                          required="required" data-error="Texto invalido"></textarea>
-                <div class="help-block with-errors">value="<?= $_SESSION['formacao'] ?? ""; ?>"</div>
-
-                <label for="form_experiencia" class="mt-2">Experiência Profissional</label>
-                <textarea id="form_experiencia" rows="10" name="experiencia" class="form-control"
-                          required="required" data-error="Texto invalido"></textarea>
-                <div class="help-block with-errors">value="<?= $_SESSION['experiencia'] ?? ""; ?>"</div>
-
                 <label for="form_pretensao" class="mt-2">Pretensão Salarial</label>
                 <input id="form_pretensao" type="number" name="pretensao" class="form-control"
                        placeholder="Pretensão Salarial" required="required"
-                       data-error="Valor invalido" step="any" min="1"
-                       value="value="<?= $_SESSION['pretensao'] ?? ""; ?>"">
+                       data-error="Valor invalido" step="0.01" min="1"
+                       value="<?= $_SESSION['pretensao'] ?? ""; ?>">
                 <div class="help-block with-errors"></div>
 
-                <button type="submit" class="btn btn-primary ms-auto mt-3">Enviar</button>
+                <label for="form_formacao" class="mt-2">Formação - Especializações</label>
+                <textarea id="form_formacao" rows="10" name="formacao" class="form-control"
+                          data-error="Texto invalido"><?= $_SESSION['formacao'] ?? ""; ?></textarea>
+                <div class="help-block with-errors"></div>
+
+                <label for="form_experiencia" class="mt-2">Experiência Profissional</label>
+                <textarea id="form_experiencia" rows="10" name="experiencia" class="form-control"
+                          required="required"
+                          data-error="Texto invalido"><?= $_SESSION['experiencia'] ?? ""; ?></textarea>
+                <div class="help-block with-errors"></div>
+
+
+                <p id="aviso_campos" class="text-danger mt-1 ms-auto">Preencha todos os campos</p>
+                <button type="submit" id="envio-form" class="btn btn-primary ms-auto mb-3 mt-2">Enviar</button>
 
 
             </div>
@@ -168,15 +175,18 @@ session_start();
     </div>
 </div>
 
+
 <script type='text/javascript'>
 
     let erro = GetURLParameter('erro');
+    $("#aviso_cpf").hide();
+    $("#aviso_campos").hide();
 
     if (erro == "usuario") {
         $(document).ready(function () {
             $('#aviso_email').hide();
         });
-    } else if (erro == "servidor") {
+    } else if (erro == "email") {
         $(document).ready(function () {
             $('#aviso_usuario').hide();
         });
@@ -187,7 +197,35 @@ session_start();
         });
     }
 
+    const input = document.querySelector('#form_pretensao')
+    input.addEventListener('change', e => {
+        e.currentTarget.value = parseFloat(e.currentTarget.value).toFixed(2)
+    })
+
+    let form = document.getElementById("formulario")
+
+    $('#formulario').submit(function (e) {
+        e.preventDefault()
+
+        let nome = document.getElementById("form_nome").value;
+        let email = document.getElementById("form_email").value;
+        let usuario = document.getElementById("form_usuario").value;
+        let cpf = document.getElementById("form_cpf").value;
+
+        teste = TestaCPF(cpf);
+
+        if (!teste){
+            $("#aviso_cpf").show();
+
+        }
+        else if (nome == "" || email == "" || cpf == "" || usuario == "") {
+            $("#aviso_campos").show();
+        }
+
+    })
+
 </script>
+
 
 </body>
 

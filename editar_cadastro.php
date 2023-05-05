@@ -7,7 +7,7 @@ session_start();
 $config = parse_ini_file('config.ini');
 
 date_default_timezone_set("America/Sao_Paulo");
-$errorMessage = "Erro no envio do Currículo";
+$errorMessage = "Erro no editar o curriculo";
 
 function salvar_progresso()
 {
@@ -23,7 +23,6 @@ function salvar_progresso()
     $_SESSION["experiencia"] = $_POST["experiencia"];
     $_SESSION["pretensao"] = $_POST["pretensao"];
 }
-
 try {
 
     $conn = database();
@@ -43,39 +42,56 @@ try {
     $formacao = $_POST["formacao"];
     $experiencia = $_POST["experiencia"];
     $pretensao = $_POST["pretensao"];
-    $data_envio = date("Y-m-d H-i-s");
 
 
-    $sql = "SELECT * FROM desafio.curriculo WHERE Usuario = '{$usuario}'";
-    $result = $conn->query($sql);
+    $curriculo = unserialize($_SESSION["curriculo"]);
 
-    if (($result->num_rows >= 1) || ($usuario == $config["admin_user"])) {
-        $conn->close();
-        salvar_progresso();
-        header("Location: /cadastro.php?erro=usuario", TRUE, 301);
-        die();
+    if($usuario != $curriculo->usuario){
+        $sql = "SELECT * FROM desafio.curriculo WHERE Usuario = '{$usuario}'";
+        $result = $conn->query($sql);
+
+        if (($result->num_rows >= 1) || ($usuario == $config["admin_user"])) {
+            $conn->close();
+            salvar_progresso();
+            header("Location: /usuario.php?erro=usuario", TRUE, 301);
+            die();
+        }
     }
 
-    $sql = "SELECT * FROM desafio.curriculo WHERE Email = '{$email}'";
-    $result = $conn->query($sql);
+    if($email != $curriculo->email) {
+        $sql = "SELECT * FROM desafio.curriculo WHERE Email = '{$email}'";
+        $result = $conn->query($sql);
 
-    if (!$result) throw new \Exception('Erro no banco de dados');
+        if (!$result) throw new \Exception('Erro no banco de dados');
 
-    if ($result->num_rows >= 1) {
-        $conn->close();
-        salvar_progresso();
-        header("Location: /cadastro.php?erro=email", TRUE, 301);
-        die();
+        if ($result->num_rows >= 1) {
+            $conn->close();
+            salvar_progresso();
+            header("Location: /usuario.php?erro=email", TRUE, 301);
+            die();
+        }
     }
 
-    $sql = "INSERT INTO desafio.curriculo (Usuario, Email, Senha, Nome, CPF, DataNascimento, Sexo, 
-                               EstadoCivil, Escolaridade, 
-                               Formacao, Experiencia, Pretensao, DataEnvio) VALUES ('{$usuario}', '{$email}', 
-                                                                                    '{$hash_pass}', '{$nome}', '{$cpf}', 
-                                                                                    '{$nascimento}', '{$sexo}', 
-                                                                                    '{$civil}', '{$escolaridade}', 
-                                                                                    '{$formacao}', '{$experiencia}', 
-                                                                                    '{$pretensao}', '{$data_envio}')";
+    if($pass === null || trim($pass) === ''){
+
+        $sql = "
+    UPDATE desafio.curriculo
+    SET Usuario = '{$usuario}', Email = '{$email}', Nome = '{$nome}', CPF = '{$cpf}', DataNascimento = '{$nascimento}',
+        Sexo = '{$sexo}', EstadoCivil = '{$civil}', Escolaridade = '{$escolaridade}', Formacao = '{$formacao}',
+        Experiencia = '{$experiencia}', Pretensao = {$pretensao}
+    WHERE Usuario = '{$curriculo->usuario}'
+    ";
+
+    }
+    else {
+        $sql = "
+    UPDATE desafio.curriculo
+    SET Usuario = '{$usuario}', Email = '{$email}',Senha = '{$hash_pass}', Nome = '{$nome}', CPF = '{$cpf}', DataNascimento = '{$nascimento}',
+        Sexo = '{$sexo}', EstadoCivil = '{$civil}', Escolaridade = '{$escolaridade}', Formacao = '{$formacao}',
+        Experiencia = '{$experiencia}', Pretensao = {$pretensao}
+    WHERE Usuario = '{$curriculo->usuario}'
+    ";
+    }
 
     $result = $conn->query($sql);
 
@@ -109,7 +125,7 @@ try {
                 $_SESSION = array();
                 $_SESSION["curriculo"] = serialize($logged);
 
-                confirmacao("Cadastro bem sucedido", "Seu currículo foi enviado! Boa sorte!", "/usuario.php");
+                confirmacao("Edição bem sucedida", "Seu currículo foi editado.", "/usuario.php");
 
             } else {
                 header("Location: /index.php?erro=login", TRUE, 301);
