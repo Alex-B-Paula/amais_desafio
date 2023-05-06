@@ -3,7 +3,9 @@ include "database.php";
 
 session_start();
 
+$config = parse_ini_file('config.ini');
 $errorMessage = "Erro no sistema";
+
 try {
     $conn = database();
 

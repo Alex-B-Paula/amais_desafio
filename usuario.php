@@ -304,28 +304,30 @@ $curriculo = unserialize($_SESSION["curriculo"]);
         e.currentTarget.value = parseFloat(e.currentTarget.value).toFixed(2)
     })
 
-    let loginForm = document.getElementById("envio-form");
+    let form = document.getElementById("formulario")
 
-    loginForm.addEventListener("submit", (e) => {
-        e.preventDefault();
+    $('#formulario').submit(function (e) {
+        e.preventDefault()
 
-        let nome = document.getElementById("form_nome");
-        let email = document.getElementById("form_email");
-        let usuario = document.getElementById("form_usuario");
-        let cpf = document.getElementById("form_cpf");
+        let nome = document.getElementById("form_nome").value;
+        let email = document.getElementById("form_email").value;
+        let usuario = document.getElementById("form_usuario").value;
+        let cpf = document.getElementById("form_cpf").value;
 
-        let teste = TestaCPF(cpf);
+        teste = TestaCPF(cpf);
 
         if (!teste){
             $("#aviso_cpf").show();
-        }
-        else if (nome.value == "" || email.value == "" || cpf.value == "" || usuario.value == "") {
-            $("#aviso_campos").show();
-        } else {
-            document.getElementById("formulario").submit();
 
         }
-    });
+        else if (nome == "" || email == "" || cpf == "" || usuario == "") {
+            $("#aviso_campos").show();
+        }
+        else{
+            $('#formulario').submit();
+        }
+
+    })
 
 </script>
 

@@ -205,7 +205,6 @@ session_start();
     let form = document.getElementById("formulario")
 
     $('#formulario').submit(function (e) {
-        e.preventDefault()
 
         let nome = document.getElementById("form_nome").value;
         let email = document.getElementById("form_email").value;
@@ -215,11 +214,16 @@ session_start();
         teste = TestaCPF(cpf);
 
         if (!teste){
+            e.preventDefault()
             $("#aviso_cpf").show();
 
         }
         else if (nome == "" || email == "" || cpf == "" || usuario == "") {
+            e.preventDefault()
             $("#aviso_campos").show();
+        }
+        else{
+            $('#formulario').submit();
         }
 
     })
