@@ -47,7 +47,7 @@ try {
     $curriculo = unserialize($_SESSION["curriculo"]);
 
     if($usuario != $curriculo->usuario){
-        $sql = "SELECT * FROM desafio.curriculo WHERE Usuario = '{$usuario}'";
+        $sql = "SELECT * FROM {$config["db_schema"]}.curriculo WHERE Usuario = '{$usuario}'";
         $result = $conn->query($sql);
 
         if (($result->num_rows >= 1) || ($usuario == $config["admin_user"])) {
@@ -59,7 +59,7 @@ try {
     }
 
     if($email != $curriculo->email) {
-        $sql = "SELECT * FROM desafio.curriculo WHERE Email = '{$email}'";
+        $sql = "SELECT * FROM {$config["db_schema"]}.curriculo WHERE Email = '{$email}'";
         $result = $conn->query($sql);
 
         if (!$result) throw new \Exception('Erro no banco de dados');
@@ -75,7 +75,7 @@ try {
     if($pass === null || trim($pass) === ''){
 
         $sql = "
-    UPDATE desafio.curriculo
+    UPDATE {$config["db_schema"]}.curriculo
     SET Usuario = '{$usuario}', Email = '{$email}', Nome = '{$nome}', CPF = '{$cpf}', DataNascimento = '{$nascimento}',
         Sexo = '{$sexo}', EstadoCivil = '{$civil}', Escolaridade = '{$escolaridade}', Formacao = '{$formacao}',
         Experiencia = '{$experiencia}', Pretensao = {$pretensao}
@@ -85,7 +85,7 @@ try {
     }
     else {
         $sql = "
-    UPDATE desafio.curriculo
+    UPDATE {$config["db_schema"]}.curriculo
     SET Usuario = '{$usuario}', Email = '{$email}',Senha = '{$hash_pass}', Nome = '{$nome}', CPF = '{$cpf}', DataNascimento = '{$nascimento}',
         Sexo = '{$sexo}', EstadoCivil = '{$civil}', Escolaridade = '{$escolaridade}', Formacao = '{$formacao}',
         Experiencia = '{$experiencia}', Pretensao = {$pretensao}
@@ -97,7 +97,7 @@ try {
 
     if (!$result) throw new \Exception('Erro no banco de dados');
 
-    $sql = "SELECT * FROM desafio.curriculo WHERE Usuario = '{$usuario}'";
+    $sql = "SELECT * FROM {$config["db_schema"]}.curriculo WHERE Usuario = '{$usuario}'";
     $result = $conn->query($sql);
     $conn->close();
 

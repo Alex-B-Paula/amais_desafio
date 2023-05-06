@@ -26,7 +26,7 @@ try {
     }
 
     $conn = database();
-    $sql = "SELECT * FROM desafio.curriculo WHERE Usuario = '{$usuario}'";
+    $sql = "SELECT * FROM {$config["db_schema"]}.curriculo WHERE Usuario = '{$usuario}'";
     $result = $conn->query($sql);
     $conn->close();
 

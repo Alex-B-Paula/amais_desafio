@@ -46,7 +46,7 @@ try {
     $data_envio = date("Y-m-d H-i-s");
 
 
-    $sql = "SELECT * FROM desafio.curriculo WHERE Usuario = '{$usuario}'";
+    $sql = "SELECT * FROM {$config["db_schema"]}.curriculo WHERE Usuario = '{$usuario}'";
     $result = $conn->query($sql);
 
     if (($result->num_rows >= 1) || ($usuario == $config["admin_user"])) {
@@ -56,7 +56,7 @@ try {
         die();
     }
 
-    $sql = "SELECT * FROM desafio.curriculo WHERE Email = '{$email}'";
+    $sql = "SELECT * FROM {$config["db_schema"]}.curriculo WHERE Email = '{$email}'";
     $result = $conn->query($sql);
 
     if (!$result) throw new \Exception('Erro no banco de dados');
@@ -68,7 +68,7 @@ try {
         die();
     }
 
-    $sql = "INSERT INTO desafio.curriculo (Usuario, Email, Senha, Nome, CPF, DataNascimento, Sexo, 
+    $sql = "INSERT INTO {$config["db_schema"]}.curriculo (Usuario, Email, Senha, Nome, CPF, DataNascimento, Sexo, 
                                EstadoCivil, Escolaridade, 
                                Formacao, Experiencia, Pretensao, DataEnvio) VALUES ('{$usuario}', '{$email}', 
                                                                                     '{$hash_pass}', '{$nome}', '{$cpf}', 
@@ -81,7 +81,7 @@ try {
 
     if (!$result) throw new \Exception('Erro no banco de dados');
 
-    $sql = "SELECT * FROM desafio.curriculo WHERE Usuario = '{$usuario}'";
+    $sql = "SELECT * FROM {$config["db_schema"]}.curriculo WHERE Usuario = '{$usuario}'";
     $result = $conn->query($sql);
     $conn->close();
 

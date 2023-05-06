@@ -7,7 +7,7 @@ $errorMessage = "Erro no sistema";
 try {
     $conn = database();
 
-    $sql = "SELECT Pretensao FROM desafio.curriculo";
+    $sql = "SELECT Pretensao FROM {$config["db_schema"]}.curriculo";
     $result = $conn->query($sql);
     $pretensoes = [];
 
@@ -27,7 +27,7 @@ try {
 
     if (!$result) throw new \Exception('Erro no banco de dados');
 
-    $sql = "SELECT * FROM desafio.curriculo ORDER BY DataEnvio";
+    $sql = "SELECT * FROM {$config["db_schema"]}.curriculo ORDER BY DataEnvio";
     $result = $conn->query($sql);
 
 
