@@ -1,5 +1,5 @@
 <?php
-
+# Função para criação de avisos utilizando modal
 
 function confirmacao(string $topo, string $msg, string $link){
 

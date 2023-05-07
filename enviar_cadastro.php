@@ -3,12 +3,14 @@ include "database.php";
 include "curriculo.php";
 include "confirmacao.php";
 session_start();
+# Script para envio de currículos
 
 $config = parse_ini_file('config.ini');
 
 date_default_timezone_set("America/Sao_Paulo");
 $errorMessage = "Erro no envio do Currículo";
 
+# Funçõo que salva dados de inscrição em caso de erros
 function salvar_progresso()
 {
     $_SESSION["usuario"] = $_POST["usuario"];
@@ -46,6 +48,7 @@ try {
     $data_envio = date("Y-m-d H-i-s");
 
 
+    # O usuário é procurado no banco e caso exista, o envio do currículo é cancelado.
     $sql = "SELECT * FROM {$config["db_schema"]}.curriculo WHERE Usuario = '{$usuario}'";
     $result = $conn->query($sql);
 
@@ -56,6 +59,7 @@ try {
         die();
     }
 
+    # O email é procurado no banco e caso exista, o envio do currículo é cancelado.
     $sql = "SELECT * FROM {$config["db_schema"]}.curriculo WHERE Email = '{$email}'";
     $result = $conn->query($sql);
 
@@ -68,6 +72,8 @@ try {
         die();
     }
 
+
+    # O currículo é inserido no banco
     $sql = "INSERT INTO {$config["db_schema"]}.curriculo (Usuario, Email, Senha, Nome, CPF, DataNascimento, Sexo, 
                                EstadoCivil, Escolaridade, 
                                Formacao, Experiencia, Pretensao, DataEnvio) VALUES ('{$usuario}', '{$email}', 
@@ -87,9 +93,9 @@ try {
 
     if (!$result) throw new \Exception('Erro no banco de dados');
 
+    # O novo usuário é logado e enviado para página de edição.
     if ($result->num_rows == 1) {
         while ($row = $result->fetch_assoc()) {
-
 
             if (password_verify($pass, $row["Senha"])) {
                 $logged = new curriculo();
@@ -109,6 +115,7 @@ try {
                 $_SESSION = array();
                 $_SESSION["curriculo"] = serialize($logged);
 
+                # Mensagem de confirmação
                 confirmacao("Cadastro bem sucedido", "Seu currículo foi enviado! Boa sorte!", "/usuario.php");
 
             } else {

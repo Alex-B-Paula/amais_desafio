@@ -3,12 +3,14 @@ include "database.php";
 include "curriculo.php";
 include "confirmacao.php";
 session_start();
+# Script para edição de currículos cadastrados
 
 $config = parse_ini_file('config.ini');
 
 date_default_timezone_set("America/Sao_Paulo");
 $errorMessage = "Erro no editar o curriculo";
 
+# Funçõo que salva dados de inscrição em caso de erros
 function salvar_progresso()
 {
     $_SESSION["usuario"] = $_POST["usuario"];
@@ -46,6 +48,7 @@ try {
 
     $curriculo = unserialize($_SESSION["curriculo"]);
 
+    # Caso o usuário tenha sido modificado, ele é procurado no banco e caso exista, a edição é cancelada
     if($usuario != $curriculo->usuario){
         $sql = "SELECT * FROM {$config["db_schema"]}.curriculo WHERE Usuario = '{$usuario}'";
         $result = $conn->query($sql);
@@ -58,6 +61,7 @@ try {
         }
     }
 
+    # Caso o email tenha sido modificado, ele é procurado no banco e caso exista, a edição é cancelada
     if($email != $curriculo->email) {
         $sql = "SELECT * FROM {$config["db_schema"]}.curriculo WHERE Email = '{$email}'";
         $result = $conn->query($sql);
@@ -72,6 +76,7 @@ try {
         }
     }
 
+    # O currículo é atualizando no banco, junto com a senha, caso ela tenha sido modificada
     if($pass === null || trim($pass) === ''){
 
         $sql = "
@@ -97,6 +102,8 @@ try {
 
     if (!$result) throw new \Exception('Erro no banco de dados');
 
+    # O usuário é logado novamente com os novos dados.
+
     $sql = "SELECT * FROM {$config["db_schema"]}.curriculo WHERE Usuario = '{$usuario}'";
     $result = $conn->query($sql);
     $conn->close();
@@ -105,7 +112,6 @@ try {
 
     if ($result->num_rows == 1) {
         while ($row = $result->fetch_assoc()) {
-
 
             if (password_verify($pass, $row["Senha"])) {
                 $logged = new curriculo();
@@ -125,6 +131,7 @@ try {
                 $_SESSION = array();
                 $_SESSION["curriculo"] = serialize($logged);
 
+                # Mensagem de confirmação
                 confirmacao("Edição bem sucedida", "Seu currículo foi editado.", "/usuario.php");
 
             } else {

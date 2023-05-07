@@ -1,4 +1,6 @@
 <?php
+
+# Função de criação de conexões com banco de dados
 function database()
 {
     $config = parse_ini_file('config.ini');

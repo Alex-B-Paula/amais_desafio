@@ -2,10 +2,12 @@
 include "database.php";
 
 session_start();
+#Página de administração com lista de currículos enviados
 
 $config = parse_ini_file('config.ini');
 $errorMessage = "Erro no sistema";
 
+# Calculo de soma e média de pretensões salariais
 try {
     $conn = database();
 
@@ -41,13 +43,16 @@ try {
 } catch (\Exception $e) {
     $responseArray = array('type' => 'danger', 'message' => $errorMessage);
 }
-
+# Muda a página se não estiver logado na conta de administração
+if ($_SESSION["admin"] == $config["admin_password"]) {
+    header("Location: /", TRUE, 301);
+}
 
 ?>
 <html lang="pt">
 
 <head>
-    <title>Cadastro de Curriculo</title>
+    <title>Administração</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"

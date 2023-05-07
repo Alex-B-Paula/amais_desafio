@@ -2,6 +2,8 @@
 include "curriculo.php";
 
 session_start();
+# Página de edição de currículos.
+
 if (($_SESSION["curriculo"]) == '' || (!isset($_SESSION["curriculo"]))) {
     header("Location: /", TRUE, 301);
 }
@@ -11,7 +13,7 @@ $curriculo = unserialize($_SESSION["curriculo"]);
 <html lang="pt">
 
 <head>
-    <title>Currículo</title>
+    <title>Edição de currículo</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -281,6 +283,7 @@ $curriculo = unserialize($_SESSION["curriculo"]);
 
 <script type='text/javascript'>
 
+    // Diferentes avisos são passados para o usuário utilizando GET
     let erro = GetURLParameter('erro');
     $('#aviso_cpf').hide()
 
@@ -299,11 +302,14 @@ $curriculo = unserialize($_SESSION["curriculo"]);
         });
     }
 
+    // Formatação de pretensão salarial
     const input = document.querySelector('#form_pretensao')
     input.addEventListener('change', e => {
         e.currentTarget.value = parseFloat(e.currentTarget.value).toFixed(2)
     })
 
+    // Caso o CPF seja inválido ou os campos de nome, email, cpf ou usuário estiverem vazios,
+    // o formulario não é enviado
     let form = document.getElementById("formulario")
 
     $('#formulario').submit(function (e) {

@@ -1,3 +1,4 @@
+// Função que retorna parâmetros do GET
 function GetURLParameter(sParam)
 {
     var sPageURL = window.location.search.substring(1);
@@ -11,6 +12,8 @@ function GetURLParameter(sParam)
         }
     }
 }
+
+// Função que testa CPFs
 function TestaCPF(strCPF) {
     var Soma;
     var Resto;

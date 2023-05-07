@@ -1,5 +1,5 @@
 <?php
-
+# Classe com todas as propriedades de um currículo
 class curriculo
 {
 public $usuario;

@@ -2,7 +2,7 @@
 include "database.php";
 include "curriculo.php";
 session_start();
-
+# Script de login de usuário
 
 $config = parse_ini_file('config.ini');
 $errorMessage = "Erro algo logar o usuário";
@@ -13,9 +13,11 @@ try {
     $usuario = $_POST["usuario"];
     $pass = $_POST["senha"];
 
+    # O dados de login são comparados aos dados de administração antes do login
     if ($usuario == $config["admin_user"]){
         if ($pass == $config["admin_password"]){
-            
+
+            $_SESSION["admin"] = $config["admin_password"];
             header("Location: /admin.php",TRUE,301);
         }
         else{
@@ -25,6 +27,7 @@ try {
         die();
     }
 
+    # Usuário é procurado no banco
     $conn = database();
     $sql = "SELECT * FROM {$config["db_schema"]}.curriculo WHERE Usuario = '{$usuario}'";
     $result = $conn->query($sql);
@@ -32,10 +35,11 @@ try {
 
     if (!$result) throw new \Exception('Erro no banco de dados');
 
+
     if ($result->num_rows == 1) {
         while ($row = $result->fetch_assoc()) {
 
-
+            # Caso a senha estiver correta, o usuário é logado
             if (password_verify($pass, $row["Senha"])) {
                 $logged = new curriculo();
                 $logged->usuario = $row["Usuario"];

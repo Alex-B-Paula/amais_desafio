@@ -62,7 +62,7 @@
 </div>
 
 <script type='text/javascript'>
-
+    // Diferentes avisos são passados para o usuário utilizando GET
     let erro = GetURLParameter('erro');
 
     if (erro == "login"){
